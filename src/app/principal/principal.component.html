@@ -1,0 +1,46 @@
+<form>
+
+<label for="">NOME DO CLIENTE</label>
+<input type="text" class="form-control" [(ngModel)]="nomeDoCliente" name="nomeDoCliente">
+
+<label for="">NOME DO TECNICO</label>
+<input type="text" class="form-control" [(ngModel)]="nomeDoTecnico" name="nomeDoTecnico">
+
+  <div class="radio-group">
+    <input type="radio" name="activation" id="wifiIntegrado" value="wifiIntegrado" (change)= "selecaoEquipamento($event)">
+    <label for="wifiIntegrado">WIFI INTEGRADO</label>
+
+    <label for="onuRoteador">ONU + ROTEADOR</label>
+    <input type="radio" name="activation" id="onuRoteador" value="onuRoteador" (change)= "selecaoEquipamento($event)">
+
+  </div>
+
+<!-- <label for="">{{aparelhoSelecionado}}</label> -->
+<input type="text" *ngIf="mostrarInputAS" [placeholder]="aparelhoSelecionado">
+<input type="text" *ngIf="mostrarInputAS" [placeholder]="aparelhoSelecionadoOntP">
+
+
+<div class="radio-group">
+  <input type="radio" id="cto" name="ctoSelecionada" value="cto" (change)="selecaoCtoCeip($event)">
+  <label for="cto">CTO</label>
+
+  <input type="radio" id="ceip" name="ctoSelecionada" value="ceip" (change)="selecaoCtoCeip($event)">
+  <label for="ceip">CEIP</label>
+
+  <input type="radio" id="ctoSemIdentificacao" name="ctoSelecionada" value="ctoSemIdentificacao" (change)="selecaoCtoCeip($event)">
+  <label for="ctoSemIdentificacao">SEM IDENTIFICAÇÃO</label>
+</div>
+
+<input type="text" *ngIf="mostrarInputCtoCeip" [(ngModel)]="valorCtoCeip" [placeholder]="tipoCtoCeipSelecionado">
+
+
+
+
+
+
+
+
+
+<button type="button" class="btn btn-success" (click)= "gerarAtendimento()">Gerar Atendimento</button>
+
+</form>

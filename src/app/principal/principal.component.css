@@ -1,0 +1,28 @@
+form
+{
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+  height: auto;
+  margin: 0 auto;
+  text-align: center;
+  background-color: beige;
+}
+input
+{
+  margin-bottom: 10px;
+}
+
+.radio-group,
+.radio-group label {
+
+  margin: 10px; /* Espaçamento entre os grupos */
+}
+
+.radio-group input[type="radio"],
+.radio-group label {
+
+  margin-right: 10px;
+}
+
+
