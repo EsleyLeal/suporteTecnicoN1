@@ -13,26 +13,27 @@ export class PrincipalComponent {
   nomeDoCliente: string = '';
   nomeDoTecnico: string = '';
 
+  aparelhoSelecionado: string = '';
+  wifiIntegrado: string = 'WIFI INTEGRADO';
   ont: string = 'FHTT/SN DA ONU:     ';
   ontPatrimonio: string = 'PATRIMONIO DA ONU:     ';
   senhaWifi: string = 'SENHA DO WIFI:     ';
   senhaSelecionada: string = '';
-  aparelhoSelecionado: string = '';
-  wifiIntegrado: string = 'WIFI INTEGRADO';
 
+  aparelhoSelecionadoOntP: string = '';
   roteador: string = 'ONU + ROTEADOR';
-  fttb: string = 'FTTB';
-  fttbSelecionado = '';
   onu: string = 'FHTT DA ONU: ';
   onuRoteador: string = 'PATRIMONIO DO ROTEADOR: ';
-  aparelhoSelecionadoOntP: string = '';
+
+  fttbSelecionado = '';
+  fttb: string = 'FTTB';
+
 
   cto: string = 'CTO:';
-  ceip: string = 'CEIP:';
-  ctoSelecionada: string = '';
   tipoCtoCeipSelecionado: string = '';
-  valorCtoCeip: string = '';
   valorPortaCtoCeip: number | undefined;
+  ceip: string = 'CEIP:';
+  valorCtoCeip: string = '';
   semIdentificacao: boolean = false;
 
   mostrarInputCtoCeip: boolean = true;
@@ -102,6 +103,7 @@ export class PrincipalComponent {
     console.log('ONT normalizado:', ont);
     console.log('ONU normalizado:', onu);
     console.log('FTTB normalizado:', fttb);
+    console.log(this.tipoCtoCeipSelecionado)
 
     const identificacao = this.semIdentificacao
       ? `SEM IDENTIFICAÇÃO - PORTA: ${this.valorPortaCtoCeip}`
