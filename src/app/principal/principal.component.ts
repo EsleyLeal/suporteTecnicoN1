@@ -2,6 +2,12 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
+enum Equipamento {
+  WIFI_INTEGRADO = 'wifiIntegrado',
+  ONU_ROTEADOR = 'onuRoteador',
+  FTTB = 'fttb'
+}
+
 @Component({
   selector: 'app-principal',
   standalone: true,
@@ -10,25 +16,25 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./principal.component.css']
 })
 export class PrincipalComponent {
+  // Propriedades relacionadas ao cliente e técnico
   nomeDoCliente: string = '';
   nomeDoTecnico: string = '';
 
+  // Propriedades relacionadas aos equipamentos
   aparelhoSelecionado: string = '';
+  aparelhoSelecionadoOntP: string = '';
+  senhaSelecionada: string = '';
   wifiIntegrado: string = 'WIFI INTEGRADO';
   ont: string = 'FHTT/SN DA ONU:     ';
   ontPatrimonio: string = 'PATRIMONIO DA ONU:     ';
   senhaWifi: string = 'SENHA DO WIFI:     ';
-  senhaSelecionada: string = '';
-
-  aparelhoSelecionadoOntP: string = '';
   roteador: string = 'ONU + ROTEADOR';
   onu: string = 'FHTT DA ONU: ';
   onuRoteador: string = 'PATRIMONIO DO ROTEADOR: ';
-
-  fttbSelecionado = '';
   fttb: string = 'FTTB';
+  fttbSelecionado: string = '';
 
-
+  // Propriedades relacionadas ao CTO/CEIP
   cto: string = 'CTO:';
   tipoCtoCeipSelecionado: string = '';
   valorPortaCtoCeip: number | undefined;
@@ -36,62 +42,51 @@ export class PrincipalComponent {
   valorCtoCeip: string = '';
   semIdentificacao: boolean = false;
 
+  // Propriedades relacionadas à visibilidade dos inputs
   mostrarInputCtoCeip: boolean = true;
   mostrarInputAS: boolean = false;
   esconderInput: boolean = false;
   mostrarInputSenha: boolean = false;
   mostrarInputFTTB: boolean = false;
 
+  // Propriedade para o atendimento gerado
   atendimentoGerado: string = '';
 
-  selecaoEquipamento(event: any) {
-    const valorSelecionado = event.target.value;
-    console.log('Equipamento selecionado:', valorSelecionado);
+  // Métodos de seleção de equipamento e CTO/CEIP
+  selecaoEquipamento(event: Event) {
+    const valorSelecionado = (event.target as HTMLSelectElement).value;
 
-    if (valorSelecionado === 'wifiIntegrado') {
-      this.mostrarInputFTTB = false;
-      this.mostrarInputAS = true;
-      this.mostrarInputSenha = true;
-      this.aparelhoSelecionado = this.ont;
-      this.aparelhoSelecionadoOntP = this.ontPatrimonio;
-      this.senhaSelecionada = this.senhaWifi;
-    } else if (valorSelecionado === 'onuRoteador') {
-      this.mostrarInputFTTB = false;
-      this.mostrarInputAS = true;
-      this.mostrarInputSenha = false;
-      this.aparelhoSelecionado = this.onu;
-      this.aparelhoSelecionadoOntP = this.onuRoteador;
-    } else if (valorSelecionado === 'fttb') {
-      this.mostrarInputAS = false;
-      this.mostrarInputSenha = false;
-      this.mostrarInputFTTB = true;
-      this.aparelhoSelecionado = this.fttb; // Ajuste importante
-      this.fttbSelecionado = this.onuRoteador;
+    switch (valorSelecionado) {
+      case Equipamento.WIFI_INTEGRADO:
+        this.configurarEquipamentoWiFiIntegrado();
+        break;
+      case Equipamento.ONU_ROTEADOR:
+        this.configurarEquipamentoOnuRoteador();
+        break;
+      case Equipamento.FTTB:
+        this.configurarEquipamentoFttb();
+        break;
     }
   }
 
-  selecaoCtoCeip(event: any) {
-    const valorSelecionado = event.target.value;
+  selecaoCtoCeip(event: Event) {
+    const valorSelecionado = (event.target as HTMLSelectElement).value;
     console.log('CTO/CEIP selecionado:', valorSelecionado);
 
-    if (valorSelecionado === 'cto') {
-      this.tipoCtoCeipSelecionado = this.cto;
-      this.esconderInput = true;
-      this.mostrarInputCtoCeip = true;
-    } else if (valorSelecionado === 'ceip') {
-      this.tipoCtoCeipSelecionado = this.ceip;
-      this.esconderInput = true;
-      this.mostrarInputCtoCeip = true;
-    } else if (valorSelecionado === 'ctoSemIdentificacao') {
-      this.esconderInput = true;
-      this.mostrarInputCtoCeip = false;
+    switch (valorSelecionado) {
+      case 'cto':
+        this.configurarCto();
+        break;
+      case 'ceip':
+        this.configurarCeip();
+        break;
+      case 'ctoSemIdentificacao':
+        this.configurarCtoSemIdentificacao();
+        break;
     }
   }
 
   gerarAtendimento() {
-    console.log('Função gerarAtendimento chamada');
-    console.log('Valor de fttb:', this.fttb);
-    console.log('Valor de fttbSelecionado:', this.fttbSelecionado);
 
     // Normalizando strings para comparação
     const aparelho = this.aparelhoSelecionado.trim().toLowerCase();
@@ -99,15 +94,7 @@ export class PrincipalComponent {
     const onu = this.onu.trim().toLowerCase();
     const fttb = this.fttb.trim().toLowerCase();
 
-    console.log('Aparelho normalizado:', aparelho);
-    console.log('ONT normalizado:', ont);
-    console.log('ONU normalizado:', onu);
-    console.log('FTTB normalizado:', fttb);
-    console.log(this.tipoCtoCeipSelecionado)
-
-    const identificacao = this.semIdentificacao
-      ? `SEM IDENTIFICAÇÃO - PORTA: ${this.valorPortaCtoCeip}`
-      : `${this.tipoCtoCeipSelecionado} - ${this.valorCtoCeip} - PORTA: ${this.valorPortaCtoCeip}`;
+    const identificacao = this.obterIdentificacao();
 
     if (aparelho.includes(ont)) {
       console.log('Entrou na condição ONT');
@@ -139,7 +126,6 @@ export class PrincipalComponent {
       ${identificacao}
       `;
     } else if (aparelho.includes(fttb)) {
-      console.log('Entrou na condição FTTB');
       this.atendimentoGerado = `
       DATA 30/07/2024:
 
@@ -147,15 +133,67 @@ export class PrincipalComponent {
 
       NOME DO CLIENTE: ${this.nomeDoCliente}
       NOME DO TECNICO: ${this.nomeDoTecnico}
-
+      ${this.fttb}
       ${this.fttbSelecionado}
       ${identificacao}
       `;
     } else {
-      console.log('Erro: Aparelho não reconhecido ou informação insuficiente.');
       this.atendimentoGerado = 'Erro: Aparelho não reconhecido ou informação insuficiente.';
     }
 
     console.log('Atendimento Gerado:', this.atendimentoGerado);
+  }
+
+  // Métodos auxiliares para configuração e geração de mensagens
+  private configurarEquipamentoWiFiIntegrado() {
+    this.mostrarInputFTTB = false;
+    this.mostrarInputAS = true;
+    this.mostrarInputSenha = true;
+    this.aparelhoSelecionado = this.ont;
+    this.aparelhoSelecionadoOntP = this.ontPatrimonio;
+    this.senhaSelecionada = this.senhaWifi;
+  }
+
+  private configurarEquipamentoOnuRoteador() {
+    this.mostrarInputFTTB = false;
+    this.mostrarInputAS = true;
+    this.mostrarInputSenha = false;
+    this.aparelhoSelecionado = this.onu;
+    this.aparelhoSelecionadoOntP = this.onuRoteador;
+  }
+
+  private configurarEquipamentoFttb() {
+    this.mostrarInputAS = false;
+    this.mostrarInputSenha = false;
+    this.mostrarInputFTTB = true;
+    this.aparelhoSelecionado = this.fttb;
+    this.fttbSelecionado = this.onuRoteador;
+  }
+
+  private configurarCto() {
+    this.tipoCtoCeipSelecionado = this.cto;
+    this.esconderInput = true;
+    this.mostrarInputCtoCeip = true;
+  }
+
+  private configurarCeip() {
+    this.tipoCtoCeipSelecionado = this.ceip;
+    this.esconderInput = true;
+    this.mostrarInputCtoCeip = true;
+  }
+
+  private configurarCtoSemIdentificacao() {
+    this.esconderInput = true;
+    this.mostrarInputCtoCeip = false;
+  }
+
+  private equipamentoSelecionado(tipo: string): boolean {
+    return this.aparelhoSelecionado.trim().toLowerCase().includes(tipo.trim().toLowerCase());
+  }
+
+  private obterIdentificacao(): string {
+    return this.semIdentificacao
+      ? `SEM IDENTIFICAÇÃO - PORTA: ${this.valorPortaCtoCeip}`
+      : `${this.tipoCtoCeipSelecionado} - ${this.valorCtoCeip} - PORTA: ${this.valorPortaCtoCeip}`;
   }
 }

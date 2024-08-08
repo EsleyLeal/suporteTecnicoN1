@@ -2,11 +2,12 @@ form
 {
   display: flex;
   flex-direction: column;
-  width: 400px;
+  width: 500px;
   height: auto;
   margin: 0 auto;
   text-align: center;
-  background-color: beige;
+  background-color: #2b8ad7;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 input
 {
@@ -23,6 +24,16 @@ input
 .radio-group label {
 
   margin-right: 10px;
+}
+
+#textArea {
+  color: black;
+  background-color: white;
+  margin: 10px auto;
+  font-size: x-large;
+  width: 400px;
+  height: 150px;
+  resize: none;
 }
 
 
