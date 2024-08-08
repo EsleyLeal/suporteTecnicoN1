@@ -13,13 +13,22 @@
 
     <input type="radio" name="activation" id="onuRoteador" value="onuRoteador" (change)="selecaoEquipamento($event)">
     <label for="onuRoteador">{{ roteador }}</label>
+
+    <input type="radio" name="activation" id="fttb" value="fttb" (change)="selecaoEquipamento($event)">
+    <label for="fttb">{{ fttb }}</label>
   </div>
 
   <!-- Inputs para os aparelhos selecionados -->
   <input type="text" *ngIf="mostrarInputAS" [(ngModel)]="aparelhoSelecionado" placeholder="Digite o FHTT da ONU/Router"
     name="aparelhoSelecionado">
   <input type="text" *ngIf="mostrarInputAS" [(ngModel)]="aparelhoSelecionadoOntP"
-    placeholder="Digite o patrimônio da ONU/Router" name="aparelhoSelecionadoOntP">
+    placeholder="DIGITE O PATRIMONIO DA ONU/ROUTER" name="aparelhoSelecionadoOntP">
+
+  <input type="text" *ngIf="mostrarInputSenha" [(ngModel)]="senhaSelecionada"
+    placeholder="DIGITE O PATRIMONIO DA ONU/ROUTER" name="senhaSelecionada">
+
+    <input type="text" *ngIf="mostrarInputFTTB" [(ngModel)]="fttbSelecionado"
+     name="senhaSelecionada">
 
   <div class="radio-group">
     <input type="radio" id="cto" name="ctoSelecionada" value="cto" (change)="selecaoCtoCeip($event)">
